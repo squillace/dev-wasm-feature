@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-WASI_VERSION="${VERSION:-"20"}"
+WASI_VERSION="${VERSION:-"21"}"
 WASI_VERSION_FULL="${WASI_VERSION}.0"
-WIT_VERSION="${WIT_VERSION:-"0.4.0"}"
-WASMTIME_VERSION="${WASMTIME_VERSION:-"v9.0.4"}"
-WASM_TOOLS_VERSION="${WASM_TOOLS_VERSION:-"1.0.54"}"
+WIT_VERSION="${WIT_VERSION:-"0.18.0"}"
+WASMTIME_VERSION="${WASMTIME_VERSION:-"v18.0.2"}"
+WASM_TOOLS_VERSION="${WASM_TOOLS_VERSION:-"1.200.0"}"
 WASI_LOCATION="${LOCATION:-"/usr/local"}/lib"
+MAKE_VERSION="4.4"
 
 # TODO: Support Windows someday?
 FILE="wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz"
@@ -48,4 +49,14 @@ curl https://github.com/bytecodealliance/wasm-tools/releases/download/wasm-tools
 tar -xvzf wasm-tools-${WASM_TOOLS_VERSION}-x86_64-linux.tar.gz
 cp wasm-tools-${WASM_TOOLS_VERSION}-x86_64-linux/wasm-tools ${LOCATION}/bin/wasm-tools
 rm -r wasm-tools-${WASM_TOOLS_VERSION}-x86_64-linux*
+
+# Install make
+curl http://ftp.gnu.org/gnu/make/make-4.4.tar.gz -L --output make-${MAKE_VERSION}.tar.gz
+
+# Install to location
+tar -xvf make-${MAKE_VERSION}.tar.gz 
+cd make-${MAKE_VERSION}/
+./configure --prefix=/usr/bin  # Or your preferred place
+make
+make install
 
